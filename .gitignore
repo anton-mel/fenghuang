@@ -1,0 +1,11 @@
+# Verilog simulation artifacts
+fenghuang_sim
+*.vcd
+
+# Nsight traces (large binary files — kept on Yale only)
+sim/trace_*.nsys-rep
+sim/trace_*.sqlite
+
+# Python
+__pycache__/
+*.pyc

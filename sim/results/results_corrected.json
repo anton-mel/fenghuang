@@ -1,0 +1,32 @@
+[
+  {
+    "system": "Baseline8 (NVLink)",
+    "ttft_ms": 2200.0,
+    "tpot_us": 10256.410256410256,
+    "e2e_ms": 12702.564102564102
+  },
+  {
+    "system": "FH4 @ 4.0 TB/s",
+    "remote_bw_GBs": 4000.0,
+    "ttft_ms": 1700.0,
+    "tpot_us": 9687.5,
+    "e2e_ms": 11620.0,
+    "stall_ms": 1337.136539524598
+  },
+  {
+    "system": "FH4 @ 4.8 TB/s",
+    "remote_bw_GBs": 4800.0,
+    "ttft_ms": 1700.0,
+    "tpot_us": 8381.70259812051,
+    "e2e_ms": 10282.863460475402,
+    "stall_ms": 0.0
+  },
+  {
+    "system": "FH4 @ 6.4 TB/s",
+    "remote_bw_GBs": 6400.0,
+    "ttft_ms": 1700.0,
+    "tpot_us": 8381.70259812051,
+    "e2e_ms": 10282.863460475402,
+    "stall_ms": 0.0
+  }
+]

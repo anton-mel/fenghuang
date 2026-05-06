@@ -1,0 +1,70 @@
+{
+  "results": [
+    {
+      "system": "Baseline8 (NVLink)",
+      "config": "TP=8, BF16, Yale H100 80GB",
+      "source": "measured",
+      "ttft_ms": 4020.0,
+      "tpot_us": 10241.0,
+      "e2e_ms": 14506.784,
+      "throughput_toks_per_sec": 781.2,
+      "n_gpus": 8,
+      "precision": "BF16"
+    },
+    {
+      "system": "FH4 (no TAB, measured)",
+      "config": "TP=4, FP8, Yale H100 80GB (all weights in HBM)",
+      "source": "measured",
+      "ttft_ms": 5755.0,
+      "tpot_us": 11849.0,
+      "e2e_ms": 17888.376,
+      "throughput_toks_per_sec": 675.2,
+      "n_gpus": 4,
+      "precision": "FP8",
+      "note": "FH4 is slower than Baseline8 on Yale H100 (no TAB hardware, all weights fit in 80GB HBM)"
+    },
+    {
+      "system": "FH4 @ 4.0 TB/s (sim)",
+      "config": "TP=4, FP8, TAB simulation (paper hardware: 20 GB local HBM)",
+      "source": "simulated",
+      "remote_bw_GBs": 4000.0,
+      "ttft_ms": 5755.0,
+      "tpot_us": 9688.0,
+      "e2e_ms": 15675.512,
+      "stall_ms": 1337.0,
+      "tpot_improvement_vs_baseline": -5.4
+    },
+    {
+      "system": "FH4 @ 4.8 TB/s (sim)",
+      "config": "TP=4, FP8, TAB simulation (paper hardware: 20 GB local HBM)",
+      "source": "simulated",
+      "remote_bw_GBs": 4800.0,
+      "ttft_ms": 5755.0,
+      "tpot_us": 8382.0,
+      "e2e_ms": 14338.168,
+      "stall_ms": 0.0,
+      "tpot_improvement_vs_baseline": -18.2
+    },
+    {
+      "system": "FH4 @ 6.4 TB/s (sim)",
+      "config": "TP=4, FP8, TAB simulation (paper hardware: 20 GB local HBM)",
+      "source": "simulated",
+      "remote_bw_GBs": 6400.0,
+      "ttft_ms": 5755.0,
+      "tpot_us": 8382.0,
+      "e2e_ms": 14338.168,
+      "stall_ms": 0.0,
+      "tpot_improvement_vs_baseline": -18.2
+    }
+  ],
+  "paper_reference": {
+    "source": "arXiv:2511.10753v1 Figure 4.2",
+    "hardware": "H200 141GB, NVLink 4.0",
+    "workload": "4096 prompt + 1024 generation tokens, batch=8",
+    "Baseline8_tpot_us": 780.0,
+    "Baseline8_ttft_ms": 47.0,
+    "FH4_4_0_tpot_us": 695.0,
+    "FH4_4_8_tpot_us": 630.0,
+    "FH4_4_8_improvement_pct": -19.2
+  }
+}
