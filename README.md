@@ -91,7 +91,7 @@ ALL TESTS PASSED
 
 ---
 
-## Synthesys
+## FPGA Synthesys
 
 | Operation | Latency |
 |---|---|
