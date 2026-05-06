@@ -15,6 +15,11 @@ discuss the challenges surfaced during implementation and empirical evaluation a
 
 Anton Melnychuk, am3785, anton.melnychuk@yale.edu
 
+<img width="844" height="170" alt="image" src="https://github.com/user-attachments/assets/fcbdcbbe-9cf3-406b-9694-7aeb8e87dcc9" />
+</br>
+
+<img width="818" height="215" alt="image" src="https://github.com/user-attachments/assets/469936ee-a9c2-4017-be03-cd027874461f" />
+
 ---
 
 ### RTL
