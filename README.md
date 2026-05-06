@@ -3,6 +3,18 @@
 Implementation of the Tensor Addressable Bridge from  
 _"FengHuang: Next-Generation Memory Orchestration for AI Inferencing"_, Microsoft Research, arXiv 2511.10753v1.
 
+For our final project for CPSC 4261 (Spring 2026, Prof. Richard Yang), we implemented FengHuang, a hardware-software co-design proposal from
+Microsoft Research Asia for next-generation AI inference infrastructure. FengHuang's core primitive is the Tensor Addressable Bridge (TAB), a
+shared remote-memory fabric that decouples model-weight storage from per-GPU HBM, streaming weights and KV-cache on demand to a pool of LPDDR6
+banks over 224G/448G SerDes links. We implemented the TAB as four synthesizable Verilog modules (top-level integrator, round-robin crossbar,
+banked memory, and global completion tracker), built a roofline-based Python simulator whose bandwidth-sensitivity curve reproduces the paper's
+Figure 4.2 to within 1% at the 4.8 TB/s design point, and profiled Qwen3-235B-A22B on Yale's 8-GPU H200 cluster. In the accompanying report we
+discuss the challenges surfaced during implementation and empirical evaluation and propose a redesign that addresses them.
+
+#### Team Members
+
+Anton Melnychuk, am3785, anton.melnychuk@yale.edu
+
 ---
 
 ### RTL
@@ -35,27 +47,27 @@ _"FengHuang: Next-Generation Memory Orchestration for AI Inferencing"_, Microsof
 
 ### 1. Paper Baseline (Figure 3.8)
 What the paper compares FengHuang against:
-- **GPUs:** 8 × H200 (141 GB HBM each)
-- **Total memory:** 1152 GB HBM across all GPUs
-- **HBM bandwidth:** 38.4 TB/s aggregate
-- **Inter-GPU:** NVLink 4.0, 900 GB/s bidirectional per GPU
-- **Parallelism:** TP=8 FP8
-- **TPOT (Qwen3-235B, batch=8):** ~780 µs
+- GPUs: 8 × H200 (141 GB HBM each)
+- Total memory:** 1152 GB HBM across all GPUs
+- HBM bandwidth:** 38.4 TB/s aggregate
+- Inter-GPU:** NVLink 4.0, 900 GB/s bidirectional per GPU
+- Parallelism:** TP=8 FP8
+- TPOT (Qwen3-235B, batch=8):** ~780 µs
 
 ### 2. Paper FengHuang Simulation Setup (Figure 3.8)
 The hypothetical FengHuang system the paper models:
-- **GPUs:** N × H200 with only 20 GB local HBM per GPU
-- **Remote memory:** 144 GB × N LPDDR6 shared across all GPUs via TAB
-- **TAB bandwidth:** 4.8 TB/s per GPU, full duplex
-- **Parallelism:** TP=4 FP8 (FH4 config)
-- **TPOT (Qwen3-235B, batch=8, 4.8 TB/s):** ~630 µs
+- GPUs: N × H200 with only 20 GB local HBM per GPU
+- Remote memory: 144 GB × N LPDDR6 shared across all GPUs via TAB
+- TAB bandwidth: 4.8 TB/s per GPU, full duplex
+- Parallelism: TP=4 FP8 (FH4 config)
+- TPOT (Qwen3-235B, batch=8, 4.8 TB/s):** ~630 µs
 
 ### 3. Our Cluster Setup
-- **GPUs:** 8 × H200 SXM5 80 GB HBM each
-- **Total memory:** 640 GB HBM across all GPUs
-- **Inter-GPU:** NVLink
-- **Software:** SGLang inference server
-- **Parallelism:** TP=4 + DP=2, BF16 weights
+- GPUs: 8 × H200 SXM5 80 GB HBM each
+- Total memory: 640 GB HBM across all GPUs
+- Inter-GPU: NVLink
+- Software: SGLang inference server
+- Parallelism: TP=4 + DP=2, BF16 weights
 
 ---
 
