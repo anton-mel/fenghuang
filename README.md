@@ -34,7 +34,7 @@ Anton Melnychuk, am3785, anton.melnychuk@yale.edu
 
 Run this to see output:
 ```bash
-./sim/run.sh
+cd rtl && ./run.sh
 ```
 
 ### Nsight Simulation
@@ -46,12 +46,23 @@ Run this to see output:
 - Reproduced Figure 4.2 from paper: see `sim/results/comparison_final.png`
   - Our sim @ 4.8 TB/s: −18.2% TPOT vs Baseline8 (paper: −19.2%)
 
+Run command (requires nsys `.sqlite` traces from the Yale cluster, not checked in — pre-computed outputs in `sim/results/*.json`):
+```bash
+python sim/simulator_v2.py \
+  --baseline-trace trace_baseline8.sqlite \
+  --fh4-trace      trace_fh4_qa.sqlite \
+  --bw-sweep 4.0 4.8 6.4 \
+  --output sim/results/results_final.json
+```
+
 ### Write-Up
-- Section 1: RTL implementation
-- Section 2: Specification gaps found
-- Section 3: Nsight simulation methodology and results
-- Section 4: Comparison to paper's claims
-- Section 5: Proposed Redesign
+1. Introduction
+2. Problem Statement
+3. Prefetch Simulation
+4. Design and RTL Implementation
+5. Architectural Gaps and Failure Modes
+6. TAB Hybrid Redesign
+7. Conclusion
 
 ---
 
