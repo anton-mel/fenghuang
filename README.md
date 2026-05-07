@@ -66,34 +66,6 @@ python sim/simulator_v2.py \
 
 ---
 
-## Hardware Setups
-
-### 1. Paper Baseline (Figure 3.8)
-What the paper compares FengHuang against:
-- GPUs: 8 × H200 (141 GB HBM each)
-- Total memory:** 1152 GB HBM across all GPUs
-- HBM bandwidth:** 38.4 TB/s aggregate
-- Inter-GPU:** NVLink 4.0, 900 GB/s bidirectional per GPU
-- Parallelism:** TP=8 FP8
-- TPOT (Qwen3-235B, batch=8):** ~780 µs
-
-### 2. Paper FengHuang Simulation Setup (Figure 3.8)
-The hypothetical FengHuang system the paper models:
-- GPUs: N × H200 with only 20 GB local HBM per GPU
-- Remote memory: 144 GB × N LPDDR6 shared across all GPUs via TAB
-- TAB bandwidth: 4.8 TB/s per GPU, full duplex
-- Parallelism: TP=4 FP8 (FH4 config)
-- TPOT (Qwen3-235B, batch=8, 4.8 TB/s):** ~630 µs
-
-### 3. Our Cluster Setup
-- GPUs: 8 × H200 SXM5 80 GB HBM each
-- Total memory: 640 GB HBM across all GPUs
-- Inter-GPU: NVLink
-- Software: SGLang inference server
-- Parallelism: TP=4 + DP=2, BF16 weights
-
----
-
 ## Simulation
 
 ```bash
