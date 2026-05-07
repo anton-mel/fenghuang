@@ -32,6 +32,11 @@ Anton Melnychuk, am3785, anton.melnychuk@yale.edu
 - `tb/tb_fenghuang_tab.v` - testbench (P2P, AllReduce, AllGather)
 - All 4 tests passing under iverilog
 
+Run this to see output:
+```bash
+./sim/run.sh
+```
+
 ### Nsight Simulation
 - Profiled Qwen3-235B-A22B on Yale cluster (H100 80GB × 8) with Nsight Systems
 - Extracted GPU utilization and compute/overhead breakdown from trace
