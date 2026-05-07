@@ -88,6 +88,8 @@ ALL TESTS PASSED
 
 ## FPGA Synthesys
 
+Board: Versal VMK 180
+
 | Operation | Latency |
 |---|---|
 | Read | 220 ns |
