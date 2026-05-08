@@ -64,6 +64,10 @@ python sim/simulator_v2.py \
 6. TAB Hybrid Redesign
 7. Conclusion
 
+### Proposal Milestones & Deliverables
+- File: [`Proposal_Milestones_Deliverables.pdf`](./Proposal_Milestones_Deliverables.pdf)
+- Google Doc: https://docs.google.com/document/d/1fd-kzgP0vjDXMtHbQMhkUQU2RJWxdRnKUY_-vj2eRzY/edit?usp=sharing
+
 ---
 
 ## Simulation
