@@ -5,15 +5,7 @@ Uses MEASURED timing from both traces:
   - Baseline8 (TP=8, BF16): trace_baseline8.sqlite + server log throughput
   - FH4 (TP=4, FP8): trace_fh4_qa.sqlite + server log throughput
 
-TPOT: directly from SGLang server-log gen throughput (wall-clock, not just kernel time)
-TTFT: from trace inference-window timing
-TAB simulation: applied on top of FH4 TPOT using bandwidth model from §4.1.3
-
-Measured steady-state gen throughput (from nsys_baseline8.log, nsys_fh4_qa.log):
-  Baseline8: ~780 tok/s total / 8 requests = 97.5 tok/s/req → TPOT = 10,256 µs
-  FH4:       ~675 tok/s total / 8 requests = 84.4 tok/s/req → TPOT = 11,848 µs
-
-Yale hardware: H100 80GB SXM5 (fp16 peak 989 TFLOPS, bw 3.35 TB/s)
+My hardware: H100 80GB SXM5 (fp16 peak 989 TFLOPS, bw 3.35 TB/s)
 Paper hardware: H200 141GB (fp8 peak 1979 TFLOPS, bw 4.8 TB/s)
 """
 
@@ -32,26 +24,6 @@ OUTPUT_TOKENS           = 1024    # max_new_tokens in paper workload
 # Derived per-request TPOT (microseconds)
 BASELINE8_TPOT_US = 1e6 / (BASELINE8_TOKS_PER_SEC / N_REQUESTS)
 FH4_TPOT_US       = 1e6 / (FH4_TOKS_PER_SEC / N_REQUESTS)
-
-# ─────────────────────────────────────────────────────────────────────────────
-# FengHuang TAB bandwidth model (from paper §4.1.1 and §4.1.3)
-# ─────────────────────────────────────────────────────────────────────────────
-# Per decode step, FH4 configuration:
-#   - 4 GPUs, each holds ~25% of Qwen3-235B weights
-#   - Paper FH4: local HBM = 20 GB, TAB stores remaining weights remotely
-#   - Yale FH4:  local HBM = 80 GB (H100), all weights fit locally → no TAB stall
-#
-# To simulate the paper scenario (TAB benefit), we model the compute/memory
-# overlap based on the paper's assumptions:
-#   - Per decode step, weight bytes loaded = model_params / TP / bytes_per_param
-#   - Without TAB: weight load time = bytes / local_bw (fully sequential)
-#   - With TAB: prefetch overlaps with compute; stall only if prefetch > compute
-#
-# FH4 per-GPU model shard: 235e9 params × 1 B/param (FP8) / 4 = 58.75 GB
-# Paper's local memory:   20 GB → remote bytes per step = 58.75 - 20 = 38.75 GB
-# Yale local memory:      80 GB → remote bytes per step = 0 (all fits locally)
-#
-# For simulation we use the PAPER scenario (20 GB local) to reproduce Fig 4.2.
 
 PAPER_LOCAL_HBM_GB      = 20.0    # GB of local HBM in paper FH4 config
 FH4_TP                  = 4
@@ -86,9 +58,6 @@ def bw_efficiency(size_bytes: float) -> float:
 def get_ttft_from_trace(sqlite_path: str, inference_window_sec: float) -> float:
     """
     Extract TTFT from an nsys trace.
-
-    Strategy: find the inference window, split into 100ms buckets,
-    TTFT ≈ time from first kernel to when decode-phase steady density begins.
     """
     con = sqlite3.connect(sqlite_path)
     cur = con.cursor()
@@ -139,19 +108,6 @@ def simulate_fh4_tab(fh4_tpot_us: float,
                      remote_bytes: float) -> dict:
     """
     Simulate FH4 + TAB improvement over measured FH4.
-
-    With TAB at remote_bw_GBs:
-      - prefetch time per step = remote_bytes / (remote_bw * efficiency)
-      - FH4 compute time per step ≈ FH4_TPOT_US (measured, includes memory stalls)
-      - The memory stall portion = time waiting for weight loads
-      
-    We model the memory-bandwidth portion of TPOT:
-      - FH4 measured TPOT = compute_ns + memory_stall_ns
-      - memory_stall_ns = remote_bytes / local_hbm_bw (sequential weight streaming)
-      - TAB TPOT = compute_ns + max(0, prefetch_ns - compute_ns)
-      
-    Since we don't know the exact split, we estimate:
-      - memory_stall_ns = remote_bytes / local_hbm_bw
     """
     # Time to stream weights from local HBM (without TAB)
     local_stall_ns = remote_bytes / LOCAL_HBM_BW_GBs * 1e9 / 1e9  # ns

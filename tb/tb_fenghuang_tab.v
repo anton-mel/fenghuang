@@ -1,22 +1,6 @@
 // =============================================================================
 // tb_fenghuang_tab.v
 // Testbench for FengHuang Tensor Addressable Bridge (TAB)
-//
-// Tests three key communication patterns from the paper (§3.3.2):
-//
-//   Test 1 — P2P Send/Recv (Fig 3.7)
-//     xPU 0 writes a tensor slice to shared memory; xPU 1 reads it back.
-//     TAB issues write-completion notification; xPU 1 waits for sync.
-//
-//   Test 2 — AllReduce / ReduceScatter (Fig 3.5)
-//     All 4 xPUs write-accumulate their local partial sums to the same
-//     address.  After all banks signal completion, TAB broadcasts a sync
-//     notification.  xPU 0 reads back the accumulated result.
-//
-//   Test 3 — AllGather (Fig 3.6)
-//     Each xPU writes its local data to a distinct region of shared memory.
-//     TAB notifies all xPUs upon completion.  Each xPU reads back its
-//     peer's region.
 // =============================================================================
 `timescale 1ns/1ps
 
@@ -345,10 +329,6 @@ module tb_fenghuang_tab;
     end
 
 
-    // =========================================================================
-    // VCD dump — limit to top-level signals only (avoids iverilog hang on
-    // large mem arrays inside generate blocks)
-    // =========================================================================
     initial begin
         $dumpfile("fenghuang_tab.vcd");
         $dumpvars(1, tb_fenghuang_tab);  // depth 1: top-level only
