@@ -15,9 +15,19 @@ discuss the challenges surfaced during implementation and empirical evaluation a
 
 Anton Melnychuk, am3785, anton.melnychuk@yale.edu
 
+<img width="1440" height="804" alt="image" src="https://github.com/user-attachments/assets/8b5f722a-1849-4a40-8bf2-d2e0d9b10de4" />
+
+</br>
+
+(a) In a conventional cluster each xPU owns a full HBM stack and communicates with peers through
+a multi-tier switch fabric. AllReduce/AllGather traffic crosses the switches at every step.
+
 <img width="844" height="170" alt="image" src="https://github.com/user-attachments/assets/fcbdcbbe-9cf3-406b-9694-7aeb8e87dcc9" />
 
 </br>
+
+(a) In FengHuang, a shared Tensor Addressable Bridge (TAB) replaces the switch fabric. Per-xPU
+HBM shrinks to 20 GB; bulk weight storage moves to a pool of LPDDR6 banks.
 
 <img width="1234" height="316" alt="image" src="https://github.com/user-attachments/assets/71299b60-eb6c-4485-88ef-4ff4e3b63b1f" />
 
