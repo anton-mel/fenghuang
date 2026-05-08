@@ -46,7 +46,7 @@ cd rtl && ./run.sh
 - Reproduced Figure 4.2 from paper: see `sim/results/comparison_final.png`
   - Our sim @ 4.8 TB/s: −18.2% TPOT vs Baseline8 (paper: −19.2%)
 
-Run command (requires nsys `.sqlite` traces from the Yale cluster, not checked in — pre-computed outputs in `sim/results/*.json`):
+Run command (requires nsys `.sqlite` traces from the Yale cluster; pre-computed outputs in `sim/results/*.json`):
 ```bash
 python sim/simulator_v2.py \
   --baseline-trace trace_baseline8.sqlite \
